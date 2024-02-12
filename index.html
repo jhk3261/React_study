@@ -9,28 +9,34 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <!-- js start -->
     <script type="text/babel">
-        const root = document.getElementById("root"); //root 가져오기
         function App (){
-            const [counter, setCounter] = React.useState(0); //undefinded:data,f:data사용함수
-            const onClick = () => {
-                //setCounter(counter+1); //자동 리렌더링
-                setCounter((current) => current+1); //이전state 값 사용
-            };
-            // const counter = data[0];
-            // const modifier = data[1];
-            // const [counter, modifier] = data; 
-            //위와 동일 
-            return(
+            const [amount, setAmount] = React.useState(0);
+            const [flipped, setFlipped] = React.useState(false);
+            const onChange = (event) => {
+                setAmount(event.target.value);
+            }
+            const reset =() => setAmount(0);
+            const onFlip= () => {
+                reset();
+                setFlipped((current)=> !current);
+            }
+                return(
                 <div>
-                <h3>
-                    Total clicks: {counter}
-                </h3>
-                <button onClick={onClick}>
-                    Click me
-                </button>
-            </div>
+                    <h1 className="hi">Super Converter</h1>   
+                    <div>
+                        <label htmlFor="minutes">Minutes</label>
+                        <input value={flipped ? amount*60 : amount} id="minutes" placeholder="Minutes" type="number" onChange={onChange} disabled={flipped} />
+                    </div>    
+                    <div>
+                        <label htmlFor="hours">Hours</label>
+                        <input value={flipped ? amount : Math.round(amount / 60)} id="hours" placeholder="Hours" type="number" onChange={onChange} disabled={!flipped}/>
+                    </div>
+                    <button onClick={reset}>Reset</button>
+                    <button onClick={onFlip}>Flip</button>
+                </div>
             )
-        } //첫글자 무조건 대문자
-        ReactDOM.render(<App/>, root);  //element->html배치
+        };
+        const root = document.getElementById("root");
+        ReactDOM.render(<App/>, root);
     </script>
 </html>
